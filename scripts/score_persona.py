@@ -14,25 +14,27 @@ class Persona:
     key: str
     name: str
     base_score: int
+    min_madness: int
+    max_madness: int
     summary: str
 
 
 PERSONAS = {
-    "miracle": Persona("miracle", "补时玄学大师", 82, "越到补时越精神，专等名场面发生。"),
-    "serious": Persona("serious", "凌晨硬撑型真球迷", 76, "主队优先，全场陪跑，认真但不乱上头。"),
-    "social": Persona("social", "朋友圈气氛组", 64, "看球不一定最懂，但气氛一定到位。"),
-    "casual": Persona("casual", "大赛限定快乐人", 56, "四年一次加入战局，主打快乐和名场面。"),
-    "star": Persona("star", "球星颜值应援官", 70, "跟着球星看世界杯，应援和截图都不能少。"),
-    "tactics": Persona("tactics", "战术板上头玩家", 72, "喜欢看阵型、换人和中场博弈。"),
-    "sleep": Persona("sleep", "第二天保命派", 42, "爱看球，也爱明天还能正常生活。"),
-    "survival": Persona("survival", "伪装懂球求生员", 52, "先学会几句靠谱话术，应付朋友提问。"),
+    "miracle": Persona("miracle", "补时玄学大师", 82, 78, 96, "越到补时越精神，专等名场面发生。"),
+    "serious": Persona("serious", "凌晨硬撑型真球迷", 76, 70, 92, "主队优先，全场陪跑，认真但不乱上头。"),
+    "social": Persona("social", "朋友圈气氛组", 64, 55, 82, "看球不一定最懂，但气氛一定到位。"),
+    "casual": Persona("casual", "大赛限定快乐人", 56, 45, 75, "四年一次加入战局，主打快乐和名场面。"),
+    "star": Persona("star", "球星颜值应援官", 70, 58, 88, "跟着球星看世界杯，应援和截图都不能少。"),
+    "tactics": Persona("tactics", "战术板上头玩家", 72, 62, 86, "喜欢看阵型、换人和中场博弈。"),
+    "sleep": Persona("sleep", "第二天保命派", 42, 25, 60, "爱看球，也爱明天还能正常生活。"),
+    "survival": Persona("survival", "伪装懂球求生员", 52, 40, 72, "先学会几句靠谱话术，应付朋友提问。"),
 }
 
 CHOICE_KEYWORDS = {
     "1A": ["真球迷", "懂球", "战术"],
     "1B": ["气氛组", "社交"],
     "1C": ["大赛限定", "纯快乐"],
-    "1D": ["球星", "颜粉"],
+    "1D": ["球星", "颜粉", "应援", "看人比看球重要"],
     "2A": ["22 点前", "不能熬", "第二天"],
     "2B": ["23 点", "0 点", "不熬"],
     "2C": ["1点", "2点"],
@@ -85,6 +87,18 @@ def score_answers(answers: list[str]) -> dict[str, object]:
         ("纯快乐", "casual", 4),
         ("球星", "star", 5),
         ("颜粉", "star", 6),
+        ("颜值", "star", 6),
+        ("应援", "star", 4),
+        ("梅西", "star", 4),
+        ("messi", "star", 4),
+        ("姆巴佩", "star", 4),
+        ("mbappe", "star", 4),
+        ("c罗", "star", 4),
+        ("ronaldo", "star", 4),
+        ("亚马尔", "star", 4),
+        ("yamal", "star", 4),
+        ("贝林厄姆", "star", 4),
+        ("bellingham", "star", 4),
         ("名场面", "miracle", 5),
         ("补时", "miracle", 5),
         ("点球", "miracle", 4),
@@ -111,7 +125,8 @@ def score_answers(answers: list[str]) -> dict[str, object]:
     if scores["sleep"] >= 12 and scores[winner_key] - scores["sleep"] <= 5:
         winner_key = "sleep"
     persona = PERSONAS[winner_key]
-    madness = max(20, min(98, persona.base_score + scores[winner_key] * 2))
+    raw_madness = max(20, min(98, persona.base_score + scores[winner_key] * 2))
+    madness = max(persona.min_madness, min(persona.max_madness, raw_madness))
 
     return {
         "persona": persona.name,

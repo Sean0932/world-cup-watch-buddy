@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from dataclasses import dataclass
 
 
@@ -27,12 +28,43 @@ PERSONAS = {
     "survival": Persona("survival", "伪装懂球求生员", 52, "先学会几句靠谱话术，应付朋友提问。"),
 }
 
+CHOICE_KEYWORDS = {
+    "1A": ["真球迷", "懂球", "战术"],
+    "1B": ["气氛组", "社交"],
+    "1C": ["大赛限定", "纯快乐"],
+    "1D": ["球星", "颜粉"],
+    "2A": ["22 点前", "不能熬", "第二天"],
+    "2B": ["23 点", "0 点", "不熬"],
+    "2C": ["1点", "2点"],
+    "2D": ["3点", "可以熬夜"],
+    "2E": ["通宵", "通常无压力"],
+    "4A": ["懂球", "战术"],
+    "4B": ["社交", "气氛"],
+    "4C": ["发小红书", "发圈"],
+    "4D": ["纯快乐", "大赛限定"],
+    "5A": ["错过名场面", "补时", "点球"],
+    "5B": ["第二天", "废掉", "不能熬"],
+    "5C": ["朋友问", "看法", "接不住"],
+}
+
 
 def add(scores: dict[str, int], key: str, value: int) -> None:
     scores[key] = scores.get(key, 0) + value
 
 
+def expand_choice_labels(raw_answers: list[str]) -> list[str]:
+    expanded: list[str] = []
+    for answer in raw_answers:
+        expanded.append(answer)
+        normalized = answer.upper().replace("，", ",").replace("；", ",")
+        for match in re.findall(r"\b([1245])\s*([A-E])\b", normalized):
+            code = "".join(match)
+            expanded.extend(CHOICE_KEYWORDS.get(code, []))
+    return expanded
+
+
 def score_answers(answers: list[str]) -> dict[str, object]:
+    answers = expand_choice_labels(answers)
     text = " ".join(answers).lower()
     scores = {key: 0 for key in PERSONAS}
 

@@ -52,6 +52,9 @@ Restart your agent after installation.
 ## Quick Demo
 
 ```text
+搭子 ❯ 来，先测测你是哪种世界杯球迷。你可以直接回复：
+       1B, 2D, 阿根廷, 4B, 5A
+
 用户 ❯ 气氛组；可以熬夜；阿根廷；兴趣哦；错过名场面
 
 搭子 ❯ 你的球迷人格：朋友圈气氛组
@@ -65,7 +68,7 @@ Restart your agent after installation.
 ```bash
 python3 scripts/score_persona.py \
   "气氛组 可以熬夜 阿根廷 兴趣 错过名场面" \
-  --json
+      --json
 ```
 
 ## Repository Structure

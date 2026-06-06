@@ -39,11 +39,22 @@ Test what kind of World Cup fan I am, and help me plan tonight.
 The skill asks 5 questions:
 
 ```text
-1. Are you a serious fan, vibe fan, tournament-only fan, or player visual fan?
+1. What kind of fan are you?
+   A Serious fan / B Vibe fan / C Tournament-only fan / D Player visual fan
+
 2. What is the latest time you can stay up?
+   A Before 22:00 / B 23:00-00:00 / C 1-2 AM / D After 3 AM / E Usually no pressure
+
 3. Do you support any team or player?
-4. Are you watching for tactics, social chat, Xiaohongshu content, or pure fun?
-5. Are you more afraid of missing a big moment, being exhausted tomorrow, or not knowing what to say with friends?
+   Free text, such as Argentina, Messi, Mbappe, or no fixed team
+
+4. Why are you watching?
+   A Tactics / B Social chat / C Xiaohongshu content / D Pure fun
+
+5. What are you most afraid of?
+   A Missing a big moment / B Being exhausted tomorrow / C Not knowing what to say with friends
+
+You can reply directly like this: 1B, 2D, Argentina, 4B, 5A
 ```
 
 Then it outputs a result card:
@@ -67,7 +78,10 @@ Hashtags: #REDSkill #对世界杯动手了 #世界杯聊个球
 ### Example 1: Social Vibe Fan
 
 ```text
-User ❯ Vibe fan; I can stay up; Argentina; just interested; afraid of missing big moments.
+Buddy ❯ Let's test what kind of World Cup fan you are. You can reply directly:
+        1B, 2D, Argentina, 4B, 5A
+
+User ❯ 1B, 2D, Argentina, 4B, 5A
 
 Buddy ❯ Your fan persona: Social Vibe Fan
 
@@ -239,6 +253,18 @@ I mostly watch for player visuals and I can stay up until 3 AM, but I cannot joi
 
 ```text
 I do not want to stay up, but I still want to join the World Cup conversation. Test my persona and give me a no-late-night plan.
+```
+
+If the agent already listed the 5 questions, you can answer with compact labels:
+
+```text
+1B, 2D, Argentina, 4B, 5A
+```
+
+Mixed answers are also fine:
+
+```text
+1D, 2C, Mbappe, 4B, 5C
 ```
 
 ---
